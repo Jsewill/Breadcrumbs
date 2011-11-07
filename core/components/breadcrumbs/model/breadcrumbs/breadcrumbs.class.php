@@ -170,9 +170,9 @@ class BreadCrumbs {
         if (!$this->config['showCrumbsAtHome'] && ($resource->get('id') == $this->modx->getOption('site_start'))) return false;
 
         if ($this->config['showCurrentCrumb']) {
-            $titleToShow = $resource->get($this->config['titleField'])
+$titleToShow = $resource->get($this->config['titleField'])
                 ? $resource->get($this->config['titleField'])
-                : $resource->get('pagetitle');
+                : ($resource->getTVValue($this->config['titleField']) ? $resource->getTVValue($this->config['titleField']) : $resource->get('pagetitle'));
             if ($this->config['currentAsLink'] && (!$this->config['respectHidemenu'] || ($this->config['respectHidemenu'] && $resource->get('hidemenu') != 1 ))) {
 
                 $descriptionToUse = ($resource->get($this->config['descField']))
@@ -213,12 +213,12 @@ class BreadCrumbs {
         if (($parent->get('parent') != $parent->get('id')) ) {
             if (($this->config['showHomeCrumb'] && $parent->get('id') != $this->modx->getOption('site_start')) || (!$this->config['showHomeCrumb'])) {
                 if (!$this->config['respectHidemenu'] || ($this->config['respectHidemenu'] && $parent->get('hidemenu') != 1)) {
-                    $titleToShow = $parent->get($this->config['titleField'])
-                        ? $parent->get($this->config['titleField'])
-                        : $parent->get('pagetitle');
+            		$titleToShow = $parent->get($this->config['titleField'])
+        				? $parent->get($this->config['titleField'])
+        				: ($parent->getTVValue($this->config['titleField']) ? $parent->getTVValue($this->config['titleField']) : $parent->get('pagetitle'));
                     $descriptionToUse = $parent->get($this->config['descField'])
                         ? $parent->get($this->config['descField'])
-                        : $parent->get('pagetitle');
+                        : ($parent->getTVValue($this->config['descField']) ? $parent->getTVValue($this->config['descField']) : $parent->get('pagetitle'));
                     $this->_crumbs[] = $this->getChunk('bcTplCrumbLink',array(
                         'resource' => $parent->get('id'),
                         'description' => $descriptionToUse,
